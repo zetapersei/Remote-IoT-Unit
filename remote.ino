@@ -70,6 +70,7 @@ const char wifiPass[] = "YourWiFiPass";
 const char* broker = "server.broker";
 //const char* broker = "test.mosquitto.org";
 //const char* broker = "my_IP_local_broker";
+
 //MQTT Topic String
 const char* mqttSub = "mare_gprs/#";
 const char* checkTemp01 = "mare_gprs/seguenze/check_temp01";
@@ -122,7 +123,9 @@ TinyGsm modem(SerialAT);
 TinyGsmClient client(modem);
 PubSubClient mqtt(client);
 
-// Output
+//ATMEGA 2560 I/O definition
+
+// Digital Output
 #define ACT01_PIN 11
 #define ACT02_PIN 12
 
@@ -139,13 +142,14 @@ int act02Status = LOW;
 const int buttonPin = 2;
 int buttonState = LOW;
 
-// Analog Input
+//Temperature input
 #define ONE_WIRE_TEMP01 3
 #define ONE_WIRE_TEMP02 2
 
+// Analog Input
 int sensorPin = A0;
 
-
+// Interface Object allocation
 OneWire oneWire01(ONE_WIRE_TEMP01);
 DallasTemperature sensors_temp01(&oneWire01);
 OneWire oneWire02(ONE_WIRE_TEMP02);
@@ -161,8 +165,6 @@ Pushbutton aux04_button(AUX04_PIN);
 // RTC Time-Date
 
 DS3232RTC gprs_RTC;
-
-
 
 long lastReconnectAttempt = 0;
 
@@ -263,10 +265,7 @@ void setup() {
         hour(t), minute(t), second(t), day(t), monthShortStr(month(t)), year(t));
    SerialMon.println(tempus_buf);
 
-  // !!!!!!!!!!!
-  // Set your reset, enable, power pins here
-  // !!!!!!!!!!!
-
+  
   SerialMon.println("Wait...");
 
   // Set GSM module baud rate
@@ -311,7 +310,7 @@ void setup() {
 //#endif
 
 // wdt_reset();
-// wdt_enable(WDTO_8S);
+
 
 #if TINY_GSM_USE_GPRS && defined TINY_GSM_MODEM_XBEE
   // The XBee must run the gprsConnect function BEFORE waiting for network!
@@ -331,7 +330,7 @@ void setup() {
   }
 
  wdt_reset();
-   //wdt_enable(WDTO_8S);
+   
 
 #if TINY_GSM_USE_GPRS
   // GPRS connection parameters are usually set after network registration
@@ -358,13 +357,11 @@ void setup() {
   //mqtt.setServer(broker, 1883);
   mqtt.setCallback(mqttCallback);
 
-  //set watchdog timer
+  
    wdt_reset();
 }
 
 void loop() {
-
-  //wdt_enable(WDTO_8S);
 
   //sprintf(analValue,"%d",analogRead(sensorPin));
   //buttonState = digitalRead(buttonPin);
