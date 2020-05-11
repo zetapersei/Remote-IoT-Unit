@@ -99,20 +99,6 @@ char tmp02[5];
 int index = 0;
 char tempus_buf[20];
 
-
-// Just in case someone defined the wrong thing..
-#if TINY_GSM_USE_GPRS && not defined TINY_GSM_MODEM_HAS_GPRS
-#undef TINY_GSM_USE_GPRS
-#undef TINY_GSM_USE_WIFI
-#define TINY_GSM_USE_GPRS false
-#define TINY_GSM_USE_WIFI true
-#endif
-#if TINY_GSM_USE_WIFI && not defined TINY_GSM_MODEM_HAS_WIFI
-#undef TINY_GSM_USE_GPRS
-#undef TINY_GSM_USE_WIFI
-#define TINY_GSM_USE_GPRS true
-#define TINY_GSM_USE_WIFI false
-#endif
 #ifdef DUMP_AT_COMMANDS
   #include <StreamDebugger.h>
   StreamDebugger debugger(SerialAT, SerialMon);
@@ -296,26 +282,10 @@ void setup() {
   }
 #endif
 
-//#if TINY_GSM_USE_WIFI
-    // Wifi connection parameters must be set before waiting for the network
-//  SerialMon.print(F("Setting SSID/password..."));
-//  if (!modem.networkConnect(wifiSSID, wifiPass)) {
-//    SerialMon.println(" fail");
-//    delay(10000);
-//    return;
-//  }
-
-
   SerialMon.println(" success");
 //#endif
 
 // wdt_reset();
-
-
-#if TINY_GSM_USE_GPRS && defined TINY_GSM_MODEM_XBEE
-  // The XBee must run the gprsConnect function BEFORE waiting for network!
-  modem.gprsConnect(apn, gprsUser, gprsPass);
-#endif
 
   SerialMon.print("Waiting for network...");
   if (!modem.waitForNetwork()) {
@@ -363,87 +333,64 @@ void setup() {
 
 void loop() {
 
-  //sprintf(analValue,"%d",analogRead(sensorPin));
-  //buttonState = digitalRead(buttonPin);
-  //sensors_temp01.requestTemperatures();
-  //dtostrf(sensors_temp01.getTempCByIndex(0), 4, 1,tmp01);
-  //sensors_temp02.requestTemperatures();
-  //dtostrf(sensors_temp02.getTempCByIndex(0), 4, 1,tmp02);
-  //time_t t = gprs_RTC.get();
-  //sprintf(tempus_buf, "%.2d%.2d%.2d%.2d%s%d",hour(t), minute(t), second(t), day(t), monthShortStr(month(t)), year(t));
-
   //SerialMon.println(modem.getLocalIP());
-
-
+   
+// digital input management   
+// Burglary alarm - Ready
  if (alm_button.getSingleDebouncedPress())
     {
       mqtt.publish(alarmString, "Alert");
-
     }
-
  if (alm_button.getSingleDebouncedRelease())
     {
-
       mqtt.publish(alarmString, "Ready");
-
     }
-
+// 230 Vac test
  if (pwr_button.getSingleDebouncedPress())
     {
       mqtt.publish(pwrString, "Inizio");
-
     }
-
  if (pwr_button.getSingleDebouncedRelease())
     {
-
       mqtt.publish(pwrString, "Rientro");
-
     }
-
+// Input AUX01 
   if (aux01_button.getSingleDebouncedPress())
     {
       mqtt.publish(aux01String, "Inizio");
-
     }
-    if (aux02_button.getSingleDebouncedPress())
+  if (aux01_button.getSingleDebouncedRelease())
+    {
+      mqtt.publish(aux01String, "Rientro");
+    }
+ // Input AUX02 
+  if (aux02_button.getSingleDebouncedPress())
     {
       mqtt.publish(aux02String, "Inizio");
-
     }
-
- if (aux02_button.getSingleDebouncedRelease())
+  if (aux02_button.getSingleDebouncedRelease())
     {
-
       mqtt.publish(aux02String, "Rientro");
-
     }
-
+// Input AUX03 
      if (aux03_button.getSingleDebouncedPress())
     {
       mqtt.publish(aux03String, "Inizio");
-
     }
-
  if (aux03_button.getSingleDebouncedRelease())
     {
-
       mqtt.publish(aux03String, "Rientro");
-
     }
-
+// Input AUX04 
  if (aux04_button.getSingleDebouncedPress())
     {
       mqtt.publish(aux04String, "Inizio");
-
     }
-
  if (aux04_button.getSingleDebouncedRelease())
     {
-
       mqtt.publish(aux04String, "Rientro");
-
     }
+   
   if (!mqtt.connected()) {
     SerialMon.println("=== MQTT NOT CONNECTED ===");
     unsigned long t = millis();
