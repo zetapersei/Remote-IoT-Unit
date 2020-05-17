@@ -155,54 +155,35 @@ DS3232RTC gprs_RTC;
 long lastReconnectAttempt = 0;
 
 void mqttCallback(char* topic, byte* payload, unsigned int len) {
-
- /* SerialMon.print("Message arrived [");
-  SerialMon.print(topic);
-  SerialMon.print("]: ");
-  SerialMon.write(payload, len);
-  SerialMon.println();
-  SerialMon.print(analValue);
-  SerialMon.println();
-  SerialMon.print(tempC);
-  SerialMon.println(); */
-
-  if (String(topic) == checkTemp01) {
-  sensors_temp01.requestTemperatures();
-  dtostrf(sensors_temp01.getTempCByIndex(0), 4, 1,tmp01);
-  //mqtt.publish(analogValue01,analValue);
-  //mqtt.publish(digiValue01, buttonState ? "1" : "0");
-  mqtt.publish(temp01, tmp01);
-  //mqtt.publish(temp02, tmp02);
+// Check temperature ch 1
+ if (String(topic) == checkTemp01) {
+     sensors_temp01.requestTemperatures();
+     dtostrf(sensors_temp01.getTempCByIndex(0), 4, 1,tmp01);
+     mqtt.publish(temp01, tmp01);
   }
-
+// Check temperature ch 2
 if (String(topic) == checkTemp02) {
-  sensors_temp02.requestTemperatures();
-  dtostrf(sensors_temp02.getTempCByIndex(0), 4, 1,tmp02);
-  //mqtt.publish(analogValue01,analValue);
-  //mqtt.publish(digiValue01, buttonState ? "1" : "0");
-  //mqtt.publish(temp01, tmp01);
-  mqtt.publish(temp02, tmp02);
+     sensors_temp02.requestTemperatures();
+     dtostrf(sensors_temp02.getTempCByIndex(0), 4, 1,tmp02);
+     mqtt.publish(temp02, tmp02);
   }
-
+// Check analogic value from ch 01
 if (String(topic) == checkLevel01) {
-  sprintf(analValue,"%d",analogRead(sensorPin));
-  mqtt.publish(analogValue01,analValue);
-  //mqtt.publish(digiValue01, buttonState ? "1" : "0");
-  //mqtt.publish(temp01, tmp01);
-  //mqtt.publish(temp02, tmp02);
+     sprintf(analValue,"%d",analogRead(sensorPin));
+     mqtt.publish(analogValue01,analValue);
   }
-
-  if (String(topic) == comandoAttuatore_01) {
-    act01Status = !act01Status;
-    digitalWrite(ACT01_PIN, act01Status);
-    //mqtt.publish(statoPompa, ledStatus ? "1" : "0");
+// Out 01 activation
+if (String(topic) == comandoAttuatore_01) {
+      act01Status = !act01Status;
+      digitalWrite(ACT01_PIN, act01Status);
   }
-  if (String(topic) == comandoAttuatore_02) {
-    act02Status = !act02Status;
-    digitalWrite(ACT02_PIN, act02Status);
+// Out 02 activation   
+if (String(topic) == comandoAttuatore_02) {
+     act02Status = !act02Status;
+     digitalWrite(ACT02_PIN, act02Status);
   }
-
-  if (String(topic) == inviaData) {
+// Send data-time (for diagnostic)
+ if (String(topic) == inviaData) {
      time_t t = gprs_RTC.get();
      sprintf(tempus_buf, "%.2d\:%.2d\:%.2d %.2d %s %d",hour(t), minute(t), second(t), day(t), monthShortStr(month(t)), year(t));
      mqtt.publish(tempusString,tempus_buf);
