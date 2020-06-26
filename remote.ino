@@ -15,6 +15,8 @@
 ************************************************************************
 */
 
+#define TINY_GSM_MODEM_A6
+
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <avr/wdt.h>
