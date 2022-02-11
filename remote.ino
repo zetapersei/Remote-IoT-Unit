@@ -72,25 +72,25 @@ const char* broker = "server.broker";
 //const char* broker = "my_IP_local_broker";
 
 //MQTT Topic String
-const char* mqttSub = "mare_gprs/#";
-const char* checkTemp01 = "mare_gprs/seguenze/check_temp01";
-const char* checkTemp02 = "mare_gprs/seguenze/check_temp02";
-const char* checkLevel01 = "mare_gprs/seguenze/check_level01";
-const char* topicInit = "mare_gprs/init";
-const char* inviaData = "mare_gprs/dispositivi/stato/tempus";
-const char* comandoAttuatore_01 = "mare_gprs/comandi/dispositivi/att01";
-const char* comandoAttuatore_02 = "mare_gprs/comandi/dispositivi/att02";
-const char* analogValue01 = "mare_gprs/segnali/analogici/in01";
-const char* temp01 = "mare_gprs/segnali/analogici/temp01";
-const char* temp02 = "mare_gprs/segnali/analogici/temp02";
-const char* digiValue01 = "mare_gprs/segnali/digitali/di01";
-const char* alarmString = "mare_gprs/segnali/digitali/allarmi/intrusione";
-const char* pwrString = "mare_gprs/segnali/digitali/allarmi/rete220";
-const char* aux01String = "mare_gprs/segnali/digitali/allarmi/aux01";
-const char* aux02String = "mare_gprs/segnali/digitali/allarmi/aux02";
-const char* aux03String = "mare_gprs/segnali/digitali/allarmi/aux03";
-const char* aux04String = "mare_gprs/segnali/digitali/allarmi/aux04";
-const char* tempusString = "mare_gprs/segnali/timestamp/tempus";
+const char* mqttSub = "remote_location/#";
+const char* checkTemp01 = "remote_location/seguenze/check_temp01";
+const char* checkTemp02 = "remote_location/seguenze/check_temp02";
+const char* checkLevel01 = "remote_location/seguenze/check_level01";
+const char* topicInit = "remote_location/init";
+const char* inviaData = "remote_location/dispositivi/stato/tempus";
+const char* comandoAttuatore_01 = "remote_location/comandi/dispositivi/att01";
+const char* comandoAttuatore_02 = "remote_location/comandi/dispositivi/att02";
+const char* analogValue01 = "remote_location/segnali/analogici/in01";
+const char* temp01 = "remote_location/segnali/analogici/temp01";
+const char* temp02 = "remote_location/segnali/analogici/temp02";
+const char* digiValue01 = "remote_location/segnali/digitali/di01";
+const char* alarmString = "remote_location/segnali/digitali/allarmi/intrusione";
+const char* pwrString = "remote_location/segnali/digitali/allarmi/rete220";
+const char* aux01String = "remote_location/segnali/digitali/allarmi/aux01";
+const char* aux02String = "remote_location/segnali/digitali/allarmi/aux02";
+const char* aux03String = "remote_location/segnali/digitali/allarmi/aux03";
+const char* aux04String = "remote_location/segnali/digitali/allarmi/aux04";
+const char* tempusString = "remote_location/segnali/timestamp/tempus";
 
 // String Definition
 char analValue[5];
