@@ -63,8 +63,8 @@ const char gprsUser[] = "";
 const char gprsPass[] = "";
 
 // Your WiFi connection credentials, if applicable
-const char wifiSSID[] = "YourSSID";
-const char wifiPass[] = "YourWiFiPass";
+//const char wifiSSID[] = "YourSSID";
+//const char wifiPass[] = "YourWiFiPass";
 
 // MQTT details
 const char* broker = "server.broker";
